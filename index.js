@@ -7,15 +7,11 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-    let eventName = 'simple chat message';
-    let broadcast = (msg) => socket.broadcast.emit(eventName, msg);
-    socket.on(eventName, (msg, ackFn) => {
+    socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
-        // broadcast to other clients after 1.5 seconds
-        setTimeout(broadcast, 1500, msg);
+        socket.broadcast.emit('chat message', msg);
     });
 });
-
 http.listen(3000, () => {
     console.log('listening on *:3000');
 });
